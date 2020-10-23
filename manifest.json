@@ -9,7 +9,6 @@
      "default_icon": "client/src/icon.png",
      "default_popup": "client/popup.html"
     },
-
     "permissions": [
      "activeTab"
      ]
