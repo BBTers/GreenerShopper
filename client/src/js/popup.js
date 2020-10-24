@@ -2,12 +2,20 @@ var key = '9A7B6F9DA1A940FEBC0412DE7FCAEF22';
 var amazonURL = "https://api.rainforestapi.com/request?api_key=" + key + '&type=product&amazon_domain=';
 
 chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
-    let link = document.createElement('a');
-    link = tabs[0].url;
+    let link = tabs[0].url;
     if (!link.includes('amazon.ca') && !link.includes('amazon.com')) {
         console.log('Chrome extension only supports Amazon.com and Amazon.ca');
         return [];
     }
+
+    let product = [];
+
+    let loader = document.createElement("img");
+    loader.setAttribute("id", "loading");
+    loader.setAttribute("height", "30");
+    loader.setAttribute("width", "30");
+    loader.src = "/client/src/images/loading.gif";
+    document.getElementById("info").appendChild(loader);
 
     await getProductInfo(link).then((res) => {
         product = res;
