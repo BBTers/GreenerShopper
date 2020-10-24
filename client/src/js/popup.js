@@ -24,8 +24,12 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
         console.log(error);
     });
     console.log(product);
-    document.getElementById("productName").innerHTML = product[0];
-    document.getElementById("productCarbon").innerHTML = product[2];
+    if (product.length != 0) {
+        document.getElementById("productName").innerHTML = product[0];
+        document.getElementById("productCarbon").innerHTML = product[2];
+    } else {
+        document.getElementById("errorMsg").innerHTML = "No product has been selected.";
+    }
     return product;
 });
 
@@ -56,7 +60,7 @@ function getAPIUrl(url) {
         productID = url.substring(index, );
     }
 
-    if (productID == "ps:") {
+    if (productID == "ps:" || apiUrl == "https://amazon.ca" || apiUrl == "https://amazon.com") {
         // no product selected
         apiUrl = "";
     } else {
@@ -145,7 +149,7 @@ async function getProductInfo(url) {
      if (apiUrl != "") {
         console.log('api request to: ', apiUrl);
      } else {
-        console.log("No product has been selected.");
+        return [];
      }
 
     let data = await fetch(apiUrl);
