@@ -1,4 +1,4 @@
-let key = 'F70004700D954219BBBFFFE3DC174815';
+let key = '9A7B6F9DA1A940FEBC0412DE7FCAEF22';
 let amazonURL = "https://api.rainforestapi.com/request?api_key=" + key + '&type=product&amazon_domain=';
 
 chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
@@ -88,19 +88,28 @@ function parseData(data) {
             if (index != -1){
                 weight = weight.substring(index, ).trim();
             }
+        } else if ("Package Dimensions" in productDetails) {
+            weight = productDetails["Package Dimensions"];
+            index = weight.indexOf(";") + 1;
+            if (index != -1){
+              weight = weight.substring(index, ).trim();
+            }
         }
+
         weight = weight.toLowerCase();
-        if (weight.includes("g") || weight.includes("gram") || weight.includes("grams")) {
+        if (weight.includes("kilogram") || weight.includes("kg")) {
+            // leave as is
+            weight = weight.replace("kg", "kilogram");
+            weight = weight.replace("kilograms", "kilogram");
+        } else if (weight.includes("g") || weight.includes("gram")) {
             index = weight.indexOf("g");
             weight = parseFloat(weight.substring(0, index).trim());
             weight = weight / 1000;
-            weight = weight.toString() + " kilogram";
-        } else if (weight.includes("ounce") || weight.includes("ounces")) {
+        } else if (weight.includes("ounce")) {
             index = weight.indexOf("o");
             weight = parseFloat(weight.substring(0, index).trim());
             weight = weight * 0.02834952;
-            weight = weight.toString() + " kilogram";
-        } else if (weight.includes("pounds") || weight.includes("pound") || weight.includes("lbs") || weight.includes("lb")){
+        } else if (weight.includes("pound") || weight.includes("lb")){
             if (weight.includes("pound")) {
                 index = weight.indexOf("p");
             } else {
@@ -109,8 +118,10 @@ function parseData(data) {
             weight = parseFloat(weight.substring(0, index).trim());
             weight = weight * 0.45359237;
         }
-        if (weight != "") {
-            weight = weight.toString() + " kilogram";
+
+        weight = weight.toString();
+        if (weight != "" && !weight.includes("kilogram")) {
+            weight += " kilogram";
         }
     }
     productInfo = [product, productTypes, weight];  // weight == "" if cant be found in info
