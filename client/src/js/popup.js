@@ -4,7 +4,7 @@ var amazonURL = "https://api.rainforestapi.com/request?api_key=" + key + '&type=
 chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
     let link = tabs[0].url;
     if (!link.includes('amazon.ca') && !link.includes('amazon.com')) {
-        document.getElementById("errorMsg").innerHTML = "Chrome extension only supports Amazon.com and Amazon.ca";
+        console.log("Chrome extension only supports Amazon.com and Amazon.ca");
         return [];
     }
 
@@ -28,7 +28,7 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
         document.getElementById("productName").innerHTML = product[0];
         document.getElementById("productCarbon").innerHTML = product[2];
     } else {
-        document.getElementById("errorMsg").innerHTML = "No product has been selected.";
+        console.log("No product has been selected.");
     }
     return product;
 });
