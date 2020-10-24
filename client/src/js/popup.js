@@ -16,7 +16,8 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
         console.log(error);
     });
     console.log(product);
-    product = product.toString();
+    document.getElementById("productName").innerHTML = product[0];
+    document.getElementById("productCarbon").innerHTML = product[2];
     return product;
 });
 
