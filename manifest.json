@@ -4,12 +4,24 @@
     "name": "GrasShopper Plugin",
     "description": "This extension will analyze a product's Ecological footprint on Amazon",
     "version": "1.0",
-  
+
+    "background" : {
+        "scripts" : ["./background.js"]
+    },
+
+    "options_page": "./options.html",
+
     "browser_action": {
      "default_icon": "client/src/icon.png",
      "default_popup": "client/popup.html"
     },
+
+    "icons" : {
+        "16" : "./icon.png"
+    },
+    
     "permissions": [
-     "activeTab"
+        "activeTab",
+        "https://www.amazon.com/*"
      ]
   }
