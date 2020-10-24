@@ -23,7 +23,7 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
     let kiloCo2 = await ecoDataParser(product); 
     console.log(kiloCo2); //get number co2/kilo
     product = calEcoEmission(product, kiloCo2);
-    return product; // product = [ 'eggs', [ 'Video eggs', 'eggs' ], '0.3kilogram' ]
+    return product; // product = [ 'eggs', [ 'Video eggs', 'eggs' ], '0.3kilogram', '0.831663705_co2' ]
 });
 
 function calEcoEmission(product, kiloCo2) {
@@ -39,8 +39,8 @@ function calEcoEmission(product, kiloCo2) {
     return product; // [ 'eggs', [ 'Video eggs', 'eggs' ], '0.3kilogram', '0.831663705_co2' ]
 }
 
-async function ecoDataParser(product) { //product = ["Nintento", [Video games, games], 0.3kilo]
-    let ecoStat = fetch('./eco.json');
+function ecoDataParser(product) { //product = ["Nintento", [Video games, games], 0.3kilo]
+    let ecoStat = fetch("./src/js/eco.json"); //!!!
     ecoStat.then((resp) => {
         return resp.json();
     }).then((eco) => {
