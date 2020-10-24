@@ -1,64 +1,80 @@
 let key = 'F70004700D954219BBBFFFE3DC174815';
 let amazonURL = "https://api.rainforestapi.com/request?api_key=" + key + '&type=product&amazon_domain=';
-let amazonData = {};
 
- chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-     let link = document.createElement('a');
-     link = tabs[0].url;
-     console.log('product link: ', link);
-     if (!link.includes('amazon.ca') && !link.includes('amazon.com')) {
+chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+    let link = document.createElement('a');
+    link = tabs[0].url;
+    if (!link.includes('amazon.ca') && !link.includes('amazon.com')) {
         console.log('Chrome extension only supports Amazon.com and Amazon.ca');
         return;
-     }
+    }
+    let data = [];
 
-     if (link.includes('amazon.ca')) {
-         amazonURL += 'amazon.ca';
-     } else if (link.includes('amazon.com')) {
-         amazonURL += 'amazon.com';
-     }
-     amazonURL += '&asin='
+    getProductInfo(link).then((res) => {
+        data = res;
+        console.log(data);
+    });
+    console.log(data);  //todo: assign this value (need to do inside then?)
+    return data;
+});
 
-     let product = '/dp/';
-     if (!link.includes(product) && link.includes('/product/')) {
+
+function getAPIUrl(url) {
+    let apiUrl = amazonURL;
+    if (url.includes('amazon.ca')) {
+        apiUrl += 'amazon.ca';
+    } else if (url.includes('amazon.com')) {
+        apiUrl += 'amazon.com';
+    }
+    apiUrl += '&asin='
+
+    let product = '/dp/';
+    if (!url.includes(product) && url.includes('/product/')) {
         product = '/product/';
-     }
-     let index = link.indexOf(product);
-     index += product.length;
-     if (product == '/dp/') {
-          productID = link.substring(index, );
-          index = productID.indexOf('/');
-          if (index == -1) {
-            index = productID.indexOf('?');
-          }
-          productID = productID.substring(0, index);
-     } else {
-           // url contains /product/ and not /dp/
-          productID = link.substring(index, );
-     }
-     amazonURL += productID;
-     console.log('api request to: ', amazonURL);
+    }
+    let index = url.indexOf(product);
+    index += product.length;
+    if (product == '/dp/') {
+        productID = url.substring(index, );
+        index = productID.indexOf('/');
+    if (index == -1) {
+        index = productID.indexOf('?');
+    }
+        productID = productID.substring(0, index);
+    } else {
+    // url contains /product/ and not /dp/
+        productID = url.substring(index, );
+    }
 
-     let request = new XMLHttpRequest();
-     let productInfo = [];
-     request.open('GET', amazonURL);
-     request.onload = function () {
-        let data = JSON.parse(this.response);
-        data = data.product;
-        let product = data.title;
-        productTypes = [];
-        let categories = data.categories;
-        if (categories != []) {
-            for (let type of categories) {
-                productTypes.push(type.name);
-            }
+    if (productID == "ps:") {
+        // no product selected
+        apiUrl = "";
+    } else {
+        apiUrl += productID;
+    }
+    return apiUrl;
+}
+
+function parseData(data) {
+    let product = data.title;
+    productTypes = [];
+
+    // get product categories
+    if (data.categories && data.categories.length != 0) {
+        for (let type of data.categories) {
+            productTypes.push(type.name);
         }
+    }
+
+    // get product weight
+    let weight = "";
+    if (data.specifications && data.specifications.length != 0) {
         let specifications = data.specifications;
         let productDetails = {};
         for (let specific of specifications) {
             productDetails[specific.name] = specific.value;
         }
 
-        let weight = "";
         if ("Item Weight" in productDetails) {
             weight = productDetails["Item Weight"];
         } else if ("Product Dimensions" in productDetails) {
@@ -73,9 +89,6 @@ let amazonData = {};
             if (index != -1){
                 weight = weight.substring(index, ).trim();
             }
-        }
-        if (weight == "") {
-            weight = "0 kilogram";
         }
         weight = weight.toLowerCase();
         if (weight.includes("g") || weight.includes("gram") || weight.includes("grams")) {
@@ -96,11 +109,29 @@ let amazonData = {};
             }
             weight = parseFloat(weight.substring(0, index).trim());
             weight = weight * 0.45359237;
+        }
+        if (weight != "") {
             weight = weight.toString() + " kilogram";
         }
-        productInfo = [product, productTypes, weight];
-        console.log(productInfo);
-        // send?
+    }
+    productInfo = [product, productTypes, weight];  // weight == "" if cant be found in info
+    return productInfo;
+}
+
+
+async function getProductInfo(url) {
+     let apiUrl = await getAPIUrl(url);
+     if (apiUrl != "") {
+        console.log('api request to: ', apiUrl);
+     } else {
+        console.log("No product has been selected.");
      }
-     request.send();
- });
+
+    let data = await fetch(apiUrl);
+    data = await data.json();
+
+    // process data
+    let productData = []
+    productData = await parseData(data.product);
+    return productData;
+}
