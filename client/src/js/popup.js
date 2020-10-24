@@ -14,12 +14,6 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
         product = res;
     });
     console.log(product);
-    if (product.length != 0) {
-        //document.getElementById("productName").innerHTML = product[0];
-        //document.getElementById("productCarbon").innerHTML = product[2];
-    } else {
-        console.log("No product has been selected.");
-    }
     let kiloCo2 = await ecoDataParser(product); 
     console.log(kiloCo2); //get number co2/kilo
     product = calEcoEmission(product, kiloCo2);
