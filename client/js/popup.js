@@ -1,7 +1,6 @@
-
 let key = 'F70004700D954219BBBFFFE3DC174815';
 let amazonURL = "https://api.rainforestapi.com/request?api_key=" + key + '&type=product&amazon_domain=';
-let productID = '';
+let amazonData = {};
 
  chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
      let link = document.createElement('a');
@@ -36,11 +35,11 @@ let productID = '';
            // url contains /product/ and not /dp/
           productID = link.substring(index, );
      }
-     console.log('product id: ', productID);
      amazonURL += productID;
      console.log('api request to: ', amazonURL);
 
      let request = new XMLHttpRequest();
+     let productInfo = [];
      request.open('GET', amazonURL);
      request.onload = function () {
         let data = JSON.parse(this.response);
@@ -48,13 +47,60 @@ let productID = '';
         let product = data.title;
         productTypes = [];
         let categories = data.categories;
-        for (let type of categories) {
-            productTypes.push(type.name);
+        if (categories != []) {
+            for (let type of categories) {
+                productTypes.push(type.name);
+            }
+        }
+        let specifications = data.specifications;
+        let productDetails = {};
+        for (let specific of specifications) {
+            productDetails[specific.name] = specific.value;
         }
 
-        console.log('data: ', [product, productTypes]);
+        let weight = "";
+        if ("Item Weight" in productDetails) {
+            weight = productDetails["Item Weight"];
+        } else if ("Product Dimensions" in productDetails) {
+            weight = productDetails["Product Dimensions"];
+            index = weight.indexOf(";") + 1;
+            if (index != -1){
+                weight = weight.substring(index, ).trim();
+            }
+        } else if ("Parcel Dimensions" in productDetails) {
+            weight = productDetails["Parcel Dimensions"];
+            index = weight.indexOf(";") + 1;
+            if (index != -1){
+                weight = weight.substring(index, ).trim();
+            }
+        }
+        if (weight == "") {
+            weight = "0 kilogram";
+        }
+        weight = weight.toLowerCase();
+        if (weight.includes("g") || weight.includes("gram") || weight.includes("grams")) {
+            index = weight.indexOf("g");
+            weight = parseFloat(weight.substring(0, index).trim());
+            weight = weight / 1000;
+            weight = weight.toString() + " kilogram";
+        } else if (weight.includes("ounce") || weight.includes("ounces")) {
+            index = weight.indexOf("o");
+            weight = parseFloat(weight.substring(0, index).trim());
+            weight = weight * 0.02834952;
+            weight = weight.toString() + " kilogram";
+        } else if (weight.includes("pounds") || weight.includes("pound") || weight.includes("lbs") || weight.includes("lb")){
+            if (weight.includes("pound")) {
+                index = weight.indexOf("p");
+            } else {
+                index = weight.indexOf("l");
+            }
+            weight = parseFloat(weight.substring(0, index).trim());
+            weight = weight * 0.45359237;
+            weight = weight.toString() + " kilogram";
+        }
+        productInfo = [product, productTypes, weight];
+        console.log(productInfo);
+        // send?
      }
      request.send();
  });
-
-
