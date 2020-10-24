@@ -1,21 +1,19 @@
 let key = 'F70004700D954219BBBFFFE3DC174815';
 let amazonURL = "https://api.rainforestapi.com/request?api_key=" + key + '&type=product&amazon_domain=';
 
-chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
     let link = document.createElement('a');
     link = tabs[0].url;
     if (!link.includes('amazon.ca') && !link.includes('amazon.com')) {
         console.log('Chrome extension only supports Amazon.com and Amazon.ca');
-        return;
+        return [];
     }
-    let data = [];
 
-    getProductInfo(link).then((res) => {
-        data = res;
-        console.log(data);
+    let product = []
+    await getProductInfo(link).then((res) => {
+        product = res;
     });
-    console.log(data);  //todo: assign this value (need to do inside then?)
-    return data;
+    return product;
 });
 
 
