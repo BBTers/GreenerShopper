@@ -15,8 +15,8 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
     });
     console.log(product);
     if (product.length != 0) {
-        document.getElementById("productName").innerHTML = product[0];
-        document.getElementById("productCarbon").innerHTML = product[2];
+        //document.getElementById("productName").innerHTML = product[0];
+        //document.getElementById("productCarbon").innerHTML = product[2];
     } else {
         console.log("No product has been selected.");
     }
