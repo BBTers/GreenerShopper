@@ -1,4 +1,3 @@
-//import * as ecoData from './eco.json'
 let key = '9A7B6F9DA1A940FEBC0412DE7FCAEF22';
 let amazonURL = "https://api.rainforestapi.com/request?api_key=" + key + '&type=product&amazon_domain=';
 
@@ -21,25 +20,33 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
     return product; // product = [ 'eggs', [ 'Video eggs', 'eggs' ], '0.3kilogram' ]
 });
 
-function calEcoEmission(product, kiloCo2){
+function calEcoEmission(product, kiloCo2) {
     let shipping = 0.77221235; //shipping emission per kilogram
     let weight = product[2].split('k')[0];
-    let total = shipping * weight + kiloCo2 * weight;
+    let total;
+    if (kiloCo2 == undefined) {
+        total = shipping * weight; // if no such category or title exist 
+    } else {
+        total = shipping * weight + kiloCo2 * weight;
+    }
     product[3] = total+"_co2";
     return product; // [ 'eggs', [ 'Video eggs', 'eggs' ], '0.3kilogram', '0.831663705_co2' ]
 }
 
-function ecoDataParser(product) { //product = ["Nintento", [Video games, games], 0.3kilo]
+async function ecoDataParser(product) { //product = ["Nintento", [Video games, games], 0.3kilo]
     let ecoStat = fetch('./eco.json');
     ecoStat.then((resp) => {
         return resp.json();
     }).then((eco) => {
         console.log(eco);
-    let findtitle = eco.ecoData[0].find(( { category:any } ) => product[1].includes(category)).kilosOfCo2;
-    if (findtitle == undefined) {
-        return eco.ecoData[0].find(( { category:any } ) => product[0].includes(category)).kilosOfCo2;
-    }
- }); //3 or undefined in 
+        let findEmisson = eco.ecoData[0].find(( { category:any } ) => product[1].includes(category)).kilosOfCo2; // find under category
+        if (findEmisson == undefined) {
+            return eco.ecoData[0].find(( { category:any } ) => product[0].includes(category)).kilosOfCo2; // find under title
+        } else {
+            return findEmisson; // return either number or undefined; 
+        }
+    }); 
+}
 
 function getAPIUrl(url) {
     let apiUrl = amazonURL;
