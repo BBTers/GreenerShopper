@@ -45,9 +45,9 @@ function ecoDataParser(product) { //product = ["Nintento", [Video games, games],
         return resp.json();
     }).then((eco) => {
         console.log(eco);
-        let findEmisson = eco.ecoData[0].find(( { category:any } ) => product[1].includes(category)).kilosOfCo2; // find under category
+        let findEmisson = eco.ecoData.find(( { category:any } ) => product[1].includes(category)).kilosOfCo2; // find under category
         if (findEmisson == undefined) {
-            return eco.ecoData[0].find(( { category:any } ) => product[0].includes(category)).kilosOfCo2; // find under title
+            return eco.ecoData.find(( { category:any } ) => product[0].includes(category)).kilosOfCo2; // find under title
         } else {
             return findEmisson; // return either number or undefined; 
         }
