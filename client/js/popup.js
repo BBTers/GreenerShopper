@@ -1,6 +1,6 @@
 
 let key = 'F70004700D954219BBBFFFE3DC174815';
-let amazonAPI = "https://api.rainforestapi.com/request?api_key=" + key + '&type=product&amazon_domain=';
+let amazonURL = "https://api.rainforestapi.com/request?api_key=" + key + '&type=product&amazon_domain=';
 let productID = '';
 
  chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
@@ -13,11 +13,11 @@ let productID = '';
      }
 
      if (link.includes('amazon.ca')) {
-         amazonAPI += 'amazon.ca';
+         amazonURL += 'amazon.ca';
      } else if (link.includes('amazon.com')) {
-         amazonAPI += 'amazon.com';
+         amazonURL += 'amazon.com';
      }
-     amazonAPI += '&asin='
+     amazonURL += '&asin='
 
      let product = '/dp/';
      if (!link.includes(product) && link.includes('/product/')) {
@@ -37,8 +37,24 @@ let productID = '';
           productID = link.substring(index, );
      }
      console.log('product id: ', productID);
-     amazonAPI += productID;
-     console.log('api request to: ', amazonAPI);
+     amazonURL += productID;
+     console.log('api request to: ', amazonURL);
+
+     let request = new XMLHttpRequest();
+     request.open('GET', amazonURL);
+     request.onload = function () {
+        let data = JSON.parse(this.response);
+        data = data.product;
+        let product = data.title;
+        productTypes = [];
+        let categories = data.categories;
+        for (let type of categories) {
+            productTypes.push(type.name);
+        }
+
+        console.log('data: ', [product, productTypes]);
+     }
+     request.send();
  });
 
 
