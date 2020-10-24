@@ -29,7 +29,7 @@
         "48": "client/src/images/icon.png",
         "128": "client/src/images/icon.png"
     },
-    
+
     "permissions": [
         "activeTab"
      ]
