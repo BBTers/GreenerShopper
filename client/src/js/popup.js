@@ -24,14 +24,41 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
         console.log(error);
     });
     console.log(product);
-    if (product.length != 0) {
-        document.getElementById("productName").innerHTML = product[0];
-        document.getElementById("productCarbon").innerHTML = product[2];
-    } else {
-        console.log("No product has been selected.");
-    }
-    return product;
+    let kiloCo2 = await ecoDataParser(product); 
+    console.log(kiloCo2); //get number co2/kilo
+    product = calEcoEmission(product, kiloCo2);
+    return product; // product = [ 'eggs', [ 'Video eggs', 'eggs' ], '0.3kilogram', '0.831663705_co2' ]
 });
+
+function calEcoEmission(product, kiloCo2) {
+    let shipping = 0.77221235; //shipping emission per kilogram
+    let weight = product[2].split('k')[0];
+    let total;
+    if (kiloCo2 == undefined) {
+        total = shipping * weight; // if no such category or title exist 
+    } else {
+        total = shipping * weight + kiloCo2 * weight;
+    }
+    product[3] = total+"_co2";
+    return product; // [ 'eggs', [ 'Video eggs', 'eggs' ], '0.3kilogram', '0.831663705_co2' ]
+}
+
+function ecoDataParser(product) { //product = ["Nintento", [Video games, games], 0.3kilo]
+    let ecoStat = fetch("./src/js/eco.json"); 
+    let kiloCo2;
+    ecoStat.then((resp) => {
+        return resp.json();
+    }).then((eco) => {
+        console.log(eco);
+        for (e of eco.ecoData) {
+            if (product[1].includes(e.category) || product[0].includes(e.category)) {
+                kiloCo2 = e.kilosOfCo2;
+                console.log(kiloCo2);
+            }
+        }
+    }); 
+    return kiloCo2;
+}
 
 function getAPIUrl(url) {
     let apiUrl = amazonURL;
