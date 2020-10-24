@@ -1,5 +1,5 @@
-let key = '9A7B6F9DA1A940FEBC0412DE7FCAEF22';
-let amazonURL = "https://api.rainforestapi.com/request?api_key=" + key + '&type=product&amazon_domain=';
+var key = '9A7B6F9DA1A940FEBC0412DE7FCAEF22';
+var amazonURL = "https://api.rainforestapi.com/request?api_key=" + key + '&type=product&amazon_domain=';
 
 chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
     let link = document.createElement('a');
@@ -12,11 +12,13 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
     let product = []
     await getProductInfo(link).then((res) => {
         product = res;
+    }).catch(error => {
+        console.log(error);
     });
     console.log(product);
+    product = product.toString();
     return product;
 });
-
 
 function getAPIUrl(url) {
     let apiUrl = amazonURL;
