@@ -225,6 +225,10 @@
       "kilosOfCo2": 0.03
     },
     {
+      "category": "ipad",
+      "kilosOfCo2": "104"
+    },
+    {
       "category": "Mail a package",
       "kilosOfCo2": 0.77221235
     }

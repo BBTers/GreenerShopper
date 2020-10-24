@@ -15,19 +15,31 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
         product = res;
     });
     console.log(product);
-    let kiloCo2 = ecoDataParser(product);
-    console.log(kiloCo2);//get co2/kilo
-    return product;
+    let kiloCo2 = await ecoDataParser(product); 
+    console.log(kiloCo2); //get number co2/kilo
+    product = calEcoEmission(product, kiloCo2);
+    return product; // product = [ 'eggs', [ 'Video eggs', 'eggs' ], '0.3kilogram' ]
 });
 
+function calEcoEmission(product, kiloCo2){
+    let shipping = 0.77221235; //shipping emission per kilogram
+    let weight = product[2].split('k')[0];
+    let total = shipping * weight + kiloCo2 * weight;
+    product[3] = total+"_co2";
+    return product; // [ 'eggs', [ 'Video eggs', 'eggs' ], '0.3kilogram', '0.831663705_co2' ]
+}
+
 function ecoDataParser(product) { //product = ["Nintento", [Video games, games], 0.3kilo]
-    const ecoStat = fetch('./eco.json');
-    let eco = JSON.parse(ecoStat); 
+    let ecoStat = fetch('./eco.json');
+    ecoStat.then((resp) => {
+        return resp.json();
+    }).then((eco) => {
+        console.log(eco);
     let findtitle = eco.ecoData[0].find(( { category:any } ) => product[1].includes(category)).kilosOfCo2;
     if (findtitle == undefined) {
         return eco.ecoData[0].find(( { category:any } ) => product[0].includes(category)).kilosOfCo2;
-    } //3 or undefined in kilo 
-}
+    }
+ }); //3 or undefined in 
 
 function getAPIUrl(url) {
     let apiUrl = amazonURL;
