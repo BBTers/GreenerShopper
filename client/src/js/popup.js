@@ -9,9 +9,9 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
         return [];
     }
 
-    let product = []
     await getProductInfo(link).then((res) => {
         product = res;
+        document.getElementById("loading").style.display = "none";
     }).catch(error => {
         console.log(error);
     });
