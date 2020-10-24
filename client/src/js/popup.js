@@ -4,7 +4,7 @@ var amazonURL = "https://api.rainforestapi.com/request?api_key=" + key + '&type=
 chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
     let link = tabs[0].url;
     if (!link.includes('amazon.ca') && !link.includes('amazon.com')) {
-        console.log('Chrome extension only supports Amazon.com and Amazon.ca');
+        document.getElementById("errorMsg").innerHTML = "Chrome extension only supports Amazon.com and Amazon.ca";
         return [];
     }
 
