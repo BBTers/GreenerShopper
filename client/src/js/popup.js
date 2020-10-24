@@ -40,18 +40,20 @@ function calEcoEmission(product, kiloCo2) {
 }
 
 function ecoDataParser(product) { //product = ["Nintento", [Video games, games], 0.3kilo]
-    let ecoStat = fetch("./src/js/eco.json"); //!!!
+    let ecoStat = fetch("./src/js/eco.json"); 
+    let kiloCo2;
     ecoStat.then((resp) => {
         return resp.json();
     }).then((eco) => {
         console.log(eco);
-        let findEmisson = eco.ecoData.find(( { category:any } ) => product[1].includes(category)).kilosOfCo2; // find under category
-        if (findEmisson == undefined) {
-            return eco.ecoData.find(( { category:any } ) => product[0].includes(category)).kilosOfCo2; // find under title
-        } else {
-            return findEmisson; // return either number or undefined; 
+        for (e of eco.ecoData) {
+            if (product[1].includes(e.category) || product[0].includes(e.category)) {
+                kiloCo2 = e.kilosOfCo2;
+                console.log(kiloCo2);
+            }
         }
     }); 
+    return kiloCo2;
 }
 
 function getAPIUrl(url) {
