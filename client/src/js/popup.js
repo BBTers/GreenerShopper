@@ -1,3 +1,4 @@
+//import * as ecoData from './eco.json'
 let key = '9A7B6F9DA1A940FEBC0412DE7FCAEF22';
 let amazonURL = "https://api.rainforestapi.com/request?api_key=" + key + '&type=product&amazon_domain=';
 
@@ -14,9 +15,19 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
         product = res;
     });
     console.log(product);
+    let kiloCo2 = ecoDataParser(product);
+    console.log(kiloCo2);//get co2/kilo
     return product;
 });
 
+function ecoDataParser(product) { //product = ["Nintento", [Video games, games], 0.3kilo]
+    const ecoStat = fetch('./eco.json');
+    let eco = JSON.parse(ecoStat); 
+    let findtitle = eco.ecoData[0].find(( { category:any } ) => product[1].includes(category)).kilosOfCo2;
+    if (findtitle == undefined) {
+        return eco.ecoData[0].find(( { category:any } ) => product[0].includes(category)).kilosOfCo2;
+    } //3 or undefined in kilo 
+}
 
 function getAPIUrl(url) {
     let apiUrl = amazonURL;
