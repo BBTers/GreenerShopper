@@ -4,10 +4,10 @@ class PopupBuilder {
     }
 
     buildPopup() {
-        tippy('.a-link-normal.a-link-text', {
+        tippy('.a-size-medium', {
             content: "hello shoppers!",
             interactive: true,
-            placement: "right",
+            placement: "top",
             arrow: true,
             arrowType: "round",
             theme: "dark-blue"
