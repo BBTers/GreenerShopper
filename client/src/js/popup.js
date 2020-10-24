@@ -13,6 +13,7 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
     await getProductInfo(link).then((res) => {
         product = res;
     });
+    console.log(product);
     return product;
 });
 
