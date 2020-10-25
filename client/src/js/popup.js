@@ -38,8 +38,12 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
 
 function calEcoEmission(product, kiloCo2) {
     let shipping = 0.77221235; //shipping emission per kilogram
-    let weight = product[2].split('k')[0];
-    let total;
+    let weight, total;
+    if (product[2] == undefined){
+        weight = 0.1; // default is minium 1 package weight
+    } else {
+        weight = product[2].split('k')[0];
+    }
     if (kiloCo2 == undefined) {
         total = shipping * weight; // if no such category or title exist 
     } else {
@@ -51,15 +55,21 @@ function calEcoEmission(product, kiloCo2) {
 
 function ecoDataParser(product) { //product = ["Nintento", [Video games, games], 0.3kilo]
     let ecoStat = fetch("./src/js/eco.json"); 
-    let kiloCo2;
+    let kiloCo2 = undefined;
     ecoStat.then((resp) => {
         return resp.json();
     }).then((eco) => {
-        console.log(eco);
+        console.log(eco); 
         for (e of eco.ecoData) {
-            if (product[1].includes(e.category) || product[0].includes(e.category)) {
-                kiloCo2 = e.kilosOfCo2;
-                console.log(kiloCo2);
+            if (e.category != undefined) {
+                e.category.toLowerCase();
+                if (product[1] != undefined) {
+                    kiloCo2 = e.kilosOfCo2;
+                    console.log(kiloCo2);
+                } else if (product[0] != undefined){
+                    kiloCo2 = e.kilosOfCo2;
+                    console.log(kiloCo2);
+                }
             }
         }
     }); 
@@ -198,6 +208,6 @@ async function getProductInfo(url) {
 
     // process data
     let productData = []
-    productData = await parseData(data.product);
+    productData = await parseData(data.product).toLowerCase();
     return productData;
 }
