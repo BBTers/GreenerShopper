@@ -51,12 +51,12 @@ function ecoDataParser(product) { //product = ["Nintento", [Video games, games],
     }).then((eco) => {
         console.log(eco); 
         for (e of eco.ecoData) {
-            console.log(e.category);
-            console.log(e.category.toLowerCase());
-            e.category.toLowerCase();
-            if (product[1].toLowerCase.includes(e.category) || product[0].toLowerCase.includes(e.category)) {
-                kiloCo2 = e.kilosOfCo2;
-                console.log(kiloCo2);
+            if (e.category != undefined) {
+                e.category.toLowerCase();
+                if (product[1].toLowerCase.includes(e.category) || product[0].toLowerCase.includes(e.category)) {
+                    kiloCo2 = e.kilosOfCo2;
+                    console.log(kiloCo2);
+                }
             }
         }
     }); 
