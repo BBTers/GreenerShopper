@@ -9,6 +9,7 @@ class JSONLoader {
             fetch(chrome.extension.getURL("client/src/json/eco.json"))
             .then(function(data) {
                 data.json().then(function(jsonObject) {
+                    //ecodata = jsonObject;
                     resolve(jsonObject);
                 });
             }).catch (function (error) {
