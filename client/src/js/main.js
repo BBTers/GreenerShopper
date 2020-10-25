@@ -1,3 +1,15 @@
+var keys = ['5E9E4042F23C459EA67822C4144433AD',
+            '7E6DC968D4924CEABF4A6C0AB6BF7AA2',
+            '6A00F6C7EB514064B9A9FF71CB1C9E1F',
+            '01C734D76B874948836AE1F9D0190C44',
+            'EA0526E3B14E4EF1863477555FB238E9',
+            'B8C56BDF3EC14DFD8DAEA2D3F5DC5A3E',
+            '3F557673760944398F5DB2871EE4F92E',
+            'ECD695BA8108444D90B8FF9F5F538448',
+            '89AD08E5CBF6450FBFFFE4929E4C24A5',
+            '792B48F719454FB696F20A769E143CA1'];
+
+
 export function main() {
     document.addEventListener('mouseover', function(e) {
         if (e.target.tagName == 'DIV') {
@@ -5,8 +17,15 @@ export function main() {
           let id = myDiv.getAttribute('data-asin');
           if (id) {
             getProductInfo(id).then((product) => {
-                let instance = tippy(myDiv, {
-                    content: product,
+                console.log(product);
+                let carbon = product[3].replace("_co2", "");
+                let index = carbon.indexOf(".");
+                carbon = carbon.substring(0, index + 3);
+                carbon = parseFloat(carbon);
+                let carbonFtprt = "Carbon Footprint for item is " + carbon + ` kg.
+                                    That's like driving a small vehicle for 1 hour!`;
+                tippy(myDiv, {
+                    content: carbonFtprt,
                     interactive: true,
                     placement: "top",
                     arrow: true,
@@ -19,18 +38,33 @@ export function main() {
     });
 }
 
-async function getProductInfo(id) {
-    let key = 'BC11CB3E4B2A4A3A8259E5C3798B619B';
-    let amazonURL = "https://api.rainforestapi.com/request?api_key=" + key + '&type=product&amazon_domain=amazon.ca&asin=';
+async function getAPIKey() {
+    let params = '&type=product&amazon_domain=amazon.ca&asin=B00I8BIBCW';
+    let amazonURL = "https://api.rainforestapi.com/request?api_key=";
+    let data;
+    for (let key of keys) {
+        let index = keys.indexOf(key);
+        let base = amazonURL + key;
+        let apiUrl = base + params;
+        data = await fetch(apiUrl);
+        data = await data.json();
+        if (data.request_info.credits_remaining != 0) {
+            console.log('using key: ' + key);
+            return base;
+        } else {
+            keys.splice(index, 1);
+        }
+    }
+}
 
-    let apiUrl = amazonURL + id;
+async function getProductInfo(id) {
+    // get working api key
+    let apiUrl = await getAPIKey();
+    apiUrl += '&type=product&amazon_domain=amazon.ca&asin=' + id;
+
+    // get data from api
     let data = await fetch(apiUrl);
     data = await data.json();
-    if (data.request_info.credits_remaining == 0) {
-        // api key no longers has enough calls, need to request a new one
-        console.log("API key has reached capacity. Request for new key via  https://rainforestapi.com/ and update code.");
-        return [];
-    }
 
     // process amazon api data
     let product = [];
