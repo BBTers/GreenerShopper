@@ -14,7 +14,9 @@
            "css": ["client/src/css/mystyles.css"],
            "js": [
                "client/src/js/content.js",
-               "client/src/js/tippy.all.min.js"
+               "client/src/js/popper.min.js",
+               "client/src/js/tippy.min.js"
+               
            ]
         }
     ],

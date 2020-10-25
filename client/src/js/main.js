@@ -1,13 +1,20 @@
-import PopupBuilder from './popupBuilder.js';
-import JSONLoader from './jsonLoader.js';
-
 export function main() {
-    let carbonFootprintData = new JSONLoader();
-    carbonFootprintData.loadJSON().then(function(data) {
-       
-        let popup = new PopupBuilder(data);
-        popup.buildPopup();
-    }).catch(function(error){
-        console.log(error);
+
+    document.addEventListener('mouseover', function(e) {
+        if (e.target.tagName == 'DIV') {
+          let myDiv = e.target.parentElement;
+          let id = myDiv.getAttribute('data-asin');
+          if (id) {
+            let instance = tippy(myDiv, {
+                content: id,
+                interactive: true,
+                placement: "top",
+                arrow: true,
+                arrowType: "round",
+                theme: "dark-blue"
+            });
+          } 
+        }
     });
+
 }
