@@ -50,6 +50,7 @@ function ecoDataParser(product) { //product = ["Nintento", [Video games, games],
         return resp.json();
     }).then((eco) => {
         console.log(eco);
+        eco.category.toLowerCase();
         for (e of eco.ecoData) {
             if (product[1].toLowerCase.includes(e.category) || product[0].toLowerCase.includes(e.category)) {
                 kiloCo2 = e.kilosOfCo2;
@@ -184,6 +185,6 @@ async function getProductInfo(url) {
 
     // process data
     let productData = []
-    productData = await parseData(data.product);
+    productData = await parseData(data.product).toLowerCase();
     return productData;
 }
