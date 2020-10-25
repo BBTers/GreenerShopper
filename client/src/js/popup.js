@@ -49,7 +49,7 @@ function calEcoEmission(product, kiloCo2) {
 
 function ecoDataParser(product) { //product = ["Nintento", [Video games, games], 0.3kilo]
     let ecoStat = fetch("./src/js/eco.json"); 
-    let kiloCo2;
+    let kiloCo2 = undefined;
     ecoStat.then((resp) => {
         return resp.json();
     }).then((eco) => {
@@ -57,7 +57,10 @@ function ecoDataParser(product) { //product = ["Nintento", [Video games, games],
         for (e of eco.ecoData) {
             if (e.category != undefined) {
                 e.category.toLowerCase();
-                if (product[1].toLowerCase.includes(e.category) || product[0].toLowerCase.includes(e.category)) {
+                if (product[1] != undefined) {
+                    kiloCo2 = e.kilosOfCo2;
+                    console.log(kiloCo2);
+                } else if (product[0] != undefined){
                     kiloCo2 = e.kilosOfCo2;
                     console.log(kiloCo2);
                 }
