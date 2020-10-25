@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
   
-    "name": "GrasShopper Plugin",
+    "name": "GrennerShopper Plugin",
     "description": "This extension will analyze a product's Ecological footprint on Amazon",
     "version": "1.0.9",
 
