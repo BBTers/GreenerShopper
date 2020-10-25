@@ -1,5 +1,6 @@
-var key = '9A7B6F9DA1A940FEBC0412DE7FCAEF22';
+var key = 'E7C1E22AF2354BF2AD594D7FA9D9504A';
 var amazonURL = "https://api.rainforestapi.com/request?api_key=" + key + '&type=product&amazon_domain=';
+var errorOccurred = false;
 
 chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
     let link = tabs[0].url;
@@ -23,6 +24,11 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
     }).catch(error => {
         console.log(error);
     });
+
+    if (errorOccurred) {
+        return [];
+    }
+
     console.log(product);
     let kiloCo2 = await ecoDataParser(product); 
     console.log(kiloCo2); //get number co2/kilo
@@ -171,16 +177,24 @@ function parseData(data) {
 }
 
 
+
 async function getProductInfo(url) {
      let apiUrl = await getAPIUrl(url);
      if (apiUrl != "") {
         console.log('api request to: ', apiUrl);
      } else {
+        errorOccurred = true;
         return [];
      }
 
     let data = await fetch(apiUrl);
     data = await data.json();
+    if (data.request_info.credits_remaining == 0) {
+        errorOccurred = true;
+        // api key no longers has enough calls, need to request a new one
+        document.getElementById("info").innerHTML = "API key has reached capacity. Request for new key via  https://rainforestapi.com/ and update code.";
+        return [];
+    }
 
     // process data
     let productData = []
