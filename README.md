@@ -1,2 +1,2 @@
-# GrasShopper
-Be a better, greener shopper with GrasShopper
+# GreenerShopper
+Be a better shopper with GreenerShopper
