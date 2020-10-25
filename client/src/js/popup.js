@@ -49,9 +49,11 @@ function ecoDataParser(product) { //product = ["Nintento", [Video games, games],
     ecoStat.then((resp) => {
         return resp.json();
     }).then((eco) => {
-        console.log(eco);
-        eco.category.toLowerCase();
+        console.log(eco); 
         for (e of eco.ecoData) {
+            console.log(e.category);
+            console.log(e.category.toLowerCase());
+            e.category.toLowerCase();
             if (product[1].toLowerCase.includes(e.category) || product[0].toLowerCase.includes(e.category)) {
                 kiloCo2 = e.kilosOfCo2;
                 console.log(kiloCo2);
