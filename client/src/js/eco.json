@@ -1,0 +1,236 @@
+{ "ecoData": 
+  [
+    {
+      "category": "Red meat",
+      "kilosOfCo2": 22
+    },
+    {
+      "category": "Chicken",
+      "kilosOfCo2": 6
+    },
+    {
+      "category": "fish",
+      "kilosOfCo2": 6
+    },
+    {
+      "category": "eggs",
+      "kilosOfCo2": 6
+    },
+    {
+      "category": "Dairy",
+      "kilosOfCo2": 4
+    },
+    {
+      "category": "Cereals",
+      "kilosOfCo2": 3
+    },
+    {
+      "category": "carbohydrates",
+      "kilosOfCo2": 3
+    },
+    {
+      "category": "Fruit",
+      "kilosOfCo2": 2
+    },
+    {
+      "category": "vegetables",
+      "kilosOfCo2": 2
+    },
+    {
+      "category": "Oils",
+      "kilosOfCo2": 2
+    },
+    {
+      "category": "sweets",
+      "kilosOfCo2": 2
+    },
+    {
+      "category": "condiments",
+      "kilosOfCo2": 2
+    },
+    {
+      "category": "Potato chips",
+      "kilosOfCo2": 2.2
+    },
+    {
+      "category": "Orange Juice",
+      "kilosOfCo2": 1.15
+    },
+    {
+      "category": "Bottled smoothie",
+      "kilosOfCo2": 1.1
+    },
+    {
+      "category": "Potato",
+      "kilosOfCo2": 0.265
+    },
+    {
+      "category": "Personal computer",
+      "kilosOfCo2": 61
+    },
+    {
+      "category": "Tires",
+      "kilosOfCo2": 4.4
+    },
+    {
+      "category": "Phone books",
+      "kilosOfCo2": 2.7
+    },
+    {
+      "category": "Textbooks",
+      "kilosOfCo2": 2.4
+    },
+    {
+      "category": "Newspapers",
+      "kilosOfCo2": 2.1
+    },
+    {
+      "category": "Magazines, bulk mail",
+      "kilosOfCo2": 1.9
+    },
+    {
+      "category": "Office paper",
+      "kilosOfCo2": 1.1
+    },
+    {
+      "category": "Corrugated cardboard",
+      "kilosOfCo2": 1
+    },
+    {
+      "category": "Shampoo",
+      "kilosOfCo2": 0.592
+    },
+    {
+      "category": "Sweatshirt",
+      "kilosOfCo2": 2.5
+    },
+    {
+      "category": "Polo shirt",
+      "kilosOfCo2": 1.1
+    },
+    {
+      "category": "T-shirt",
+      "kilosOfCo2": 0.6
+    },
+    {
+      "category": "Incandescent bulb",
+      "kilosOfCo2": 0.45
+    },
+    {
+      "category": "Compact fluorescent bulb",
+      "kilosOfCo2": 0.85
+    },
+    {
+      "category": "Tablet laundry detergent",
+      "kilosOfCo2": 0.3
+    },
+    {
+      "category": "Powder laundry detergent",
+      "kilosOfCo2": 0.2
+    },
+    {
+      "category": "Liquid laundry detergent",
+      "kilosOfCo2": 0.2
+    },
+    {
+      "category": "Super concentrated liquid laundry detergent",
+      "kilosOfCo2": 0.1
+    },
+    {
+      "category": "Iron",
+      "kilosOfCo2": 1.6
+    },
+    {
+      "category": "Steel",
+      "kilosOfCo2": 4
+    },
+    {
+      "category": "Copper",
+      "kilosOfCo2": 5.5
+    },
+    {
+      "category": "Aluminum",
+      "kilosOfCo2": 5.55
+    },
+    {
+      "category": "Carpet",
+      "kilosOfCo2": 4.4
+    },
+    {
+      "category": "PVC plastic",
+      "kilosOfCo2": 4.4
+    },
+    {
+      "category": "Acrylic paint",
+      "kilosOfCo2": 3.4
+    },
+    {
+      "category": "LDPE plastic",
+      "kilosOfCo2": 2.5
+    },
+    {
+      "category": "HDPE plastic",
+      "kilosOfCo2": 2
+    },
+    {
+      "category": "PET plastic",
+      "kilosOfCo2": 2.3
+    },
+    {
+      "category": "Glass",
+      "kilosOfCo2": 0.6
+    },
+    {
+      "category": "Granite, imported",
+      "kilosOfCo2": 0.8
+    },
+    {
+      "category": "Granite, local",
+      "kilosOfCo2": 0.33
+    },
+    {
+      "category": "Bricks",
+      "kilosOfCo2": 0.14
+    },
+    {
+      "category": "Concrete blocks",
+      "kilosOfCo2": 0.08
+    },
+    {
+      "category": "Drywall",
+      "kilosOfCo2": 0.235
+    },
+    {
+      "category": "plasterboard",
+      "kilosOfCo2": 0.235
+    },
+    {
+      "category": "Plywood",
+      "kilosOfCo2": 0.57
+    },
+    {
+      "category": "Particleboard",
+      "kilosOfCo2": 0.44
+    },
+    {
+      "category": "Lumber, construction",
+      "kilosOfCo2": 0.19
+    },
+    {
+      "category": "Hardwood, kiln dried",
+      "kilosOfCo2": 0.11
+    },
+    {
+      "category": "Hardwood, air dried",
+      "kilosOfCo2": 0.03
+    },
+    {
+      "category": "ipad",
+      "kilosOfCo2": "104"
+    },
+    {
+      "category": "Mail a package",
+      "kilosOfCo2": 0.77221235
+    }
+   ]
+  }
