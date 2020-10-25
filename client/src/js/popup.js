@@ -32,8 +32,12 @@ chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
 
 function calEcoEmission(product, kiloCo2) {
     let shipping = 0.77221235; //shipping emission per kilogram
-    let weight = product[2].split('k')[0];
-    let total;
+    let weight, total;
+    if (product[2] == undefined){
+        weight = 0.1; // default is minium 1 package weight
+    } else {
+        weight = product[2].split('k')[0];
+    }
     if (kiloCo2 == undefined) {
         total = shipping * weight; // if no such category or title exist 
     } else {
